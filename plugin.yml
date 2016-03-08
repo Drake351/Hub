@@ -1,0 +1,16 @@
+name: Hub
+main: com.drake.me.HubMain
+version: 0.1
+commands:
+   setlobby:
+      description: SetLobby
+      usage: 
+   sethub:
+      description: SetHub
+      usage: 
+   lobby:
+      description: Lobby
+      usage: 
+   hub:
+      description: Hub
+      usage:
