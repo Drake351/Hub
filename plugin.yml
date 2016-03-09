@@ -1,6 +1,6 @@
 name: Hub
-main: com.drake.me.HubMain
-version: 0.1
+main: com.drake.hub.HubMain
+version: 1.0
 commands:
    setlobby:
       description: SetLobby

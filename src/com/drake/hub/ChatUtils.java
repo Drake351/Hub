@@ -1,4 +1,4 @@
-package com.drake.me;
+package com.drake.hub;
 
 import org.bukkit.ChatColor;
 

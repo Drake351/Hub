@@ -1,4 +1,4 @@
-package com.drake.me;
+package com.drake.hub;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -8,5 +8,6 @@ public class EventManager {
 	final public static void RegisterEvent(Plugin pl){
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new Events(), pl);
+		pm.registerEvents(new HubMain(), pl);
 	}
 }
