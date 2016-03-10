@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HubMain extends JavaPlugin implements Listener {
@@ -36,7 +35,7 @@ public class HubMain extends JavaPlugin implements Listener {
 		/*Téléporte au lobby*/
 		}else if(cmd.getName().equalsIgnoreCase("lobby")){
 			p.teleport((Location) this.getConfig().get("lobby"));
-			p.sendMessage(ChatUtils.getGamePrefix()+ ChatColor.GRAY + "Téléportation vers le lobby");
+			p.sendMessage(ChatUtils.prefixHub()+ ChatColor.GRAY + "Téléportation vers le lobby");
 		}
 		return false;
 	}

@@ -4,9 +4,9 @@ import org.bukkit.ChatColor;
 
 public class ChatUtils {
 	
-	static String prefix = ChatColor.BLUE + "<"+ChatColor.BLUE + "Lobby" + ChatColor.BLUE +"> ";
+	static String prefix = ChatColor.BLUE + "Hub" + ChatColor.BLUE +"> "+ ChatColor.GRAY;
 
-	public static String getGamePrefix(){
+	public static String prefixHub(){
 		return prefix;
 	} 
 }

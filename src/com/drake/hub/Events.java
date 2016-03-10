@@ -1,5 +1,6 @@
 package com.drake.hub;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,7 +20,7 @@ public class Events implements Listener{
 		Player p = e.getPlayer();
 		p.getInventory().setItem(0, Items.boussole());
 		p.getInventory().setItem(4, Items.cosmetiques());
-		p.getInventory().setItem(8, Items.clock());
+		p.getInventory().setItem(8, Items.clockOff());
 	}
 	/*Interaction avec la boussole (jeux)*/
 	@EventHandler
@@ -30,8 +31,8 @@ public class Events implements Listener{
 	        if(p.hasPermission("hub.open.chests")){
 			//if(p.getGameMode() != GameMode.CREATIVE){
 				//if(p.isOp() == true){
-	        	if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
-					if(e.getPlayer().getItemInHand().getType() == Material.COMPASS) {
+	        	if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
+					if(p.getItemInHand().getType() == Material.COMPASS) {
 				    	p.openInventory(KitsInventory.jeux);
 				    	p.playSound(loc,Sound.NOTE_PLING, 4L, 2L);
 					}
@@ -39,23 +40,65 @@ public class Events implements Listener{
 	        }
 		}
 	}
-	/*Interaction avec la clock(cosmétiques)*/
+	/*Interaction avec le firework(cosmétiques)*/
 	@EventHandler
 	public void onPlayerInteractCosmetique(PlayerInteractEvent e){
 		Player p = e.getPlayer();
 		Location loc = p.getLocation();
-		if(e.getAction().equals(Action.RIGHT_CLICK_AIR)){
 	        if(p.hasPermission("hub.open.chests")){
 			//if(p.getGameMode() != GameMode.CREATIVE){
-				//if(p.isOp() == true){
-	        	if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
-					if(e.getPlayer().getItemInHand().getType() == Material.FIREWORK) {
+			//if(p.isOp() == true){
+	        	if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
+					if(p.getItemInHand().getType() == Material.FIREWORK) {
 				    	p.openInventory(KitsInventory.cosmetiques);
 				    	p.playSound(loc,Sound.NOTE_PLING, 4L, 2L);
 					}
-				}
+	        	}
 	        }
-		}
+	}
+	
+	/*Interaction avec la clock(joueurs masque....)*/
+	@EventHandler
+	public void onPlayerInteractWatchOff(PlayerInteractEvent e){
+		Player p = e.getPlayer();
+		Location loc = p.getLocation();
+	    if(p.hasPermission("hub.open.chests")){
+		//if(p.getGameMode() != GameMode.CREATIVE){
+		//if(p.isOp() == true){
+	    	if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Masque les joueurs")){
+				//if(p.getItemInHand().getType() == Material.WATCH) {
+			    	p.playSound(loc,Sound.PORTAL_TRAVEL, 4L, 2L);
+			    	p.sendMessage(ChatUtils.prefixHub()+ "Tous les joueurs viennent de disparaître !");
+			    	p.setItemInHand(Items.clockOn());
+			    	for(Player pls : Bukkit.getOnlinePlayers()){
+			    		if(pls != p){
+			    			p.hidePlayer(pls);
+			    		}
+			    	}
+			}
+	    }
+	}
+	
+	/*Interaction avec la clock(joueurs affiche..)*/
+	@EventHandler
+	public void onPlayerInteractWatchOn(PlayerInteractEvent e){
+		Player p = e.getPlayer();
+		Location loc = p.getLocation();
+	        if(p.hasPermission("hub.open.chests")){
+			//if(p.getGameMode() != GameMode.CREATIVE){
+			//if(p.isOp() == true){
+	        	if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GREEN+"Affiche les joueurs")){
+	        		//if(p.getItemInHand().getType() == Material.WATCH) {
+	        			p.playSound(loc,Sound.PORTAL_TRAVEL, 4L, 2L);
+	        			p.sendMessage(ChatUtils.prefixHub()+"Les joueurs sont à nouveau visibles !");
+	        			for(Player pls : Bukkit.getOnlinePlayers()){
+	        				if(pls != p){
+	        					p.showPlayer(pls);
+	        				}
+	        			}
+				    	
+	        	}
+	        }
 	}
 	
 }
