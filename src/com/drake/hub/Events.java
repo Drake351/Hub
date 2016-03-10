@@ -91,6 +91,7 @@ public class Events implements Listener{
 	        		//if(p.getItemInHand().getType() == Material.WATCH) {
 	        			p.playSound(loc,Sound.PORTAL_TRAVEL, 4L, 2L);
 	        			p.sendMessage(ChatUtils.prefixHub()+"Les joueurs sont à nouveau visibles !");
+	        			p.setItemInHand(Items.clockOff());
 	        			for(Player pls : Bukkit.getOnlinePlayers()){
 	        				if(pls != p){
 	        					p.showPlayer(pls);
