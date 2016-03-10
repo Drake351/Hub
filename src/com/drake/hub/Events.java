@@ -97,7 +97,7 @@ public class Events implements Listener{
 				//if(p.getItemInHand().getType() == Material.WATCH) {
 			    	p.playSound(loc,Sound.PORTAL, 4L, 2L);
 			    	p.sendMessage(ChatUtils.prefixHub()+ "Tous les joueurs viennent de disparaître !");
-			    	p.setItemInHand(Items.clockOn());
+			    	p.getInventory().setItemInHand(Items.clockOn());
 			    	for(Player pls : Bukkit.getOnlinePlayers()){
 			    		if(pls != p){
 			    			p.hidePlayer(pls);
@@ -110,7 +110,7 @@ public class Events implements Listener{
 					//if(p.getItemInHand().getType() == Material.WATCH) {
 						p.playSound(loc,Sound.PORTAL, 4L, 2L);
 						p.sendMessage(ChatUtils.prefixHub()+ "Tous les joueurs viennent de disparaître !");
-						p.setItemInHand(Items.clockOn());
+						p.getInventory().setItemInHand(Items.clockOn());
 						for(Player pls : Bukkit.getOnlinePlayers()){
 							if(pls != p){
 								p.hidePlayer(pls);
@@ -135,7 +135,7 @@ public class Events implements Listener{
 	        		//if(p.getItemInHand().getType() == Material.WATCH) {
 	        			p.playSound(loc,Sound.PORTAL, 4L, 2L);
 	        			p.sendMessage(ChatUtils.prefixHub()+"Les joueurs sont à nouveau visibles !");
-	        			p.setItemInHand(Items.clockOff());
+	        			p.getInventory().setItemInHand(Items.clockOff());
 	        			for(Player pls : Bukkit.getOnlinePlayers()){
 	        				if(pls != p){
 	        					p.showPlayer(pls);
@@ -147,7 +147,7 @@ public class Events implements Listener{
 	        			//if(p.getItemInHand().getType() == Material.WATCH) {
 	        			p.playSound(loc,Sound.PORTAL, 4L, 2L);
 	        			p.sendMessage(ChatUtils.prefixHub()+"Les joueurs sont à nouveau visibles !");
-	        			p.setItemInHand(Items.clockOff());
+	        			p.getInventory().setItemInHand(Items.clockOff());
 	        			for(Player pls : Bukkit.getOnlinePlayers()){
 	        				if(pls != p){
 	        					p.showPlayer(pls);	       				}
