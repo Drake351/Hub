@@ -2,9 +2,7 @@ package com.drake.hub;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -35,8 +33,8 @@ public class Items {
 
 	}
 
-	public static ItemStack clockOn() {
-		ItemStack item = new ItemStack(Material.INK_SACK, 1, DyeColor.GREEN.getData());
+	public static ItemStack joueursOn() {
+		ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1 ,(byte) 14 );
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(ChatColor.DARK_RED+"Affiche les joueurs");
 		List<String> lore = new ArrayList<String>(); 
@@ -46,8 +44,8 @@ public class Items {
 		return item;
 	}
 	
-	public static ItemStack clockOff() {
-		ItemStack item = new ItemStack(Material.INK_SACK, 1, DyeColor.RED.getData());
+	public static ItemStack joueursOff() {
+		ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE,1,(byte) 5);
 	     ItemMeta meta = item.getItemMeta();
 	     meta.setDisplayName(ChatColor.GREEN+"Masque les joueurs");
 	     List<String> lore = new ArrayList<String>(); 

@@ -5,13 +5,12 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HubMain extends JavaPlugin {
+	
+	protected JavaPlugin plugin;
 	/*Démarrage Plugin*/
-	public static HubMain plugin;
 	public void onEnable(){
 		EventManager.RegisterEvent(this);
 		this.getConfig().options().copyDefaults(true);
@@ -37,15 +36,6 @@ public class HubMain extends JavaPlugin {
 			p.sendMessage(ChatUtils.prefixHub()+ ChatColor.GRAY + "Téléportation vers le lobby");
 		}
 		return false;
-	}
-	
-	
-	/*Event du player qui rejoint*/
-	@EventHandler
-	public void playerLogin(PlayerJoinEvent e){
-		Player p = e.getPlayer();
-		/*Marche pas*/p.teleport((Location) this.getConfig().get("lobby"));
-		//p.getInventory().addItem();
 	}
 	
 	
