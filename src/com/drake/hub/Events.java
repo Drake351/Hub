@@ -5,14 +5,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,6 +23,14 @@ public class Events implements Listener{
 	/*Donne les items lors de la connection*/
 	@EventHandler
 	public void giveOnJoin(PlayerJoinEvent e){
+		Player p = e.getPlayer();
+		p.getInventory().setItem(0, Items.boussole());
+		p.getInventory().setItem(4, Items.cosmetiques());
+		p.getInventory().setItem(8, Items.joueursOff());
+	}
+	/*Give back items to the player while respawn*/
+	@EventHandler
+	public void PlayerRespawn(PlayerRespawnEvent e){
 		Player p = e.getPlayer();
 		p.getInventory().setItem(0, Items.boussole());
 		p.getInventory().setItem(4, Items.cosmetiques());
@@ -74,20 +84,16 @@ public class Events implements Listener{
 		    			}
 		    		}
 		    	}else if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
-		    			if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
-		    				if(p.getItemInHand().getType() == Material.FIREWORK) {
-		    					e.setCancelled(true);
-		    					p.openInventory(KitsInventory.cosmetiques);
-		    					p.playSound(loc,Sound.NOTE_PLING, 4L, 2L);
-		    				}
-		       	
-		    			}else{
-		    				e.setCancelled(false);
-		    			}
-		    				
+		    		if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
+		    			if(p.getItemInHand().getType() == Material.FIREWORK) {
+		    				p.openInventory(KitsInventory.cosmetiques);
+		    				p.playSound(loc,Sound.NOTE_PLING, 4L, 2L);
+		    				e.setCancelled(true);
+		    			}	
 		    		}
 		    	}
-	        }
+		    }
+	}
 	/*Interaction joueursOn/Off*/
 	@EventHandler
 	public void onPlayerInteractJoueurs(PlayerInteractEvent e){
@@ -129,17 +135,17 @@ public class Events implements Listener{
 					for(Player pls : Bukkit.getOnlinePlayers()){
 						p.showPlayer(pls);
 					}
-				}else{
-    				e.setCancelled(false);
-    			}
-				
-			
+				}
+			}else if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+				if(!(p.getInventory().getItemInHand() == null)){
+					e.setCancelled(false);
+				}
 			}
 		}
 	}
 	/*Event cancelled while trying to move anything in the inventory*/
 	@EventHandler
-	public void onInventoryVip(InventoryClickEvent e) {
+	public void onInventoryClickEvent(InventoryClickEvent e) {
 		Player player = (Player) e.getWhoClicked(); 
 		ItemStack clicked = e.getCurrentItem(); 
 		Inventory inventory = e.getInventory(); 
@@ -155,5 +161,20 @@ public class Events implements Listener{
 			}
 	
 		
+	}
+	
+	/*Event cancelled while trying to drop anything from the inventory*/
+	@EventHandler
+	public void ItemDropEvent(PlayerDropItemEvent e){
+		Item item = e.getItemDrop();
+		if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
+			e.setCancelled(true);
+		}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
+			e.setCancelled(true);
+		}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED + "Affiche les joueurs")){
+			e.setCancelled(true);
+		}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Masque les joueurs")){
+			e.setCancelled(true);
+		}
 	}
 }
