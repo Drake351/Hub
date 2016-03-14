@@ -15,10 +15,11 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class Events implements Listener{
+	
+	boolean isPvpOn = false; 
 	
 	/*Donne les items lors de la connection*/
 	@EventHandler
@@ -178,4 +179,5 @@ public class Events implements Listener{
 			}
 		}
 	}
+	
 }

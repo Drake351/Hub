@@ -65,6 +65,24 @@ public class HubMain extends JavaPlugin implements Listener {
 					
 				}
 			}
+		}else if(cmd.getName().equalsIgnoreCase("setOpMotd")){
+			if(sender instanceof Player){
+				if(args.length >= 1){
+					if(!p.hasPermission("hub.set.motdop")){p.sendMessage("Tu n'as pas la permission");}
+					if(p.hasPermission("hub.set.motdop")){
+						StringBuilder str = new StringBuilder();
+                        for (int i = 0; i < args.length; i++) {
+                                str.append(args[i] + " ");
+                        }
+                        String op = str.toString();
+                        getConfig().set("motdOp", op);
+                        saveConfig();
+						p.sendMessage(ChatUtils.prefixAdmin() + "Motd pour Op défini en " + op);
+					}
+					
+				}
+			}
+		
 		}
 		return false;
 	}
@@ -72,10 +90,21 @@ public class HubMain extends JavaPlugin implements Listener {
 	@EventHandler
 	public void playerJoinMotd(PlayerJoinEvent e) {
 		Player p = e.getPlayer();
-		String string = (String) getConfig().get("motd");
-		String string2 = string.replaceAll("&" , "§");
-		String string3 = string2.replaceAll("§§" , "&");
-		String message = string3.replaceAll("%p", p.getCustomName());
-		p.sendMessage(message);
+		String playerName = p.getName();
+		if(!p.isOp()){
+			String string = (String) getConfig().get("motd");
+			String string2 = string.replaceAll("&" , "§");
+			String string3 = string2.replaceAll("§§" , "&");
+			String message = string3.replaceAll("%p", playerName);
+			p.sendMessage(message);
+		}else if(p.isOp()){
+			String op = (String) this.getConfig().get("motdOp");
+			String op1 = op.replaceAll("&" , "§");
+			String op2 = op1.replaceAll("§§" , "&");
+			String  op3 = op2.replaceAll("%p", playerName);
+			String op4 = op3.replaceAll("%listp", Bukkit.getOnlinePlayers().toString());
+			String op5 = op4.replaceAll("%n", "\n");
+			p.sendMessage(op5);
+		}
 	}
 }

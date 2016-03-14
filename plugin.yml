@@ -1,6 +1,6 @@
 name: Hub
 main: com.drake.hub.HubMain
-version: Snapshot-13.03.16
+version: Snapshot-140316
 commands:
    setlobby:
       description: SetLobby
@@ -11,3 +11,6 @@ commands:
    setmotd:
       description: Motd
       usage: 
+   setOpMotd:
+      description: Motd for Op Players
+      usage:
