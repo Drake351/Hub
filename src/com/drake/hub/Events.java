@@ -45,9 +45,9 @@ public class Events implements Listener{
 	        if(p.hasPermission("hub.open.chests")){
 			//if(p.getGameMode() != GameMode.CREATIVE){
 				//if(p.isOp() == true){
-	        	if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
-					if(p.getItemInHand().getType() == Material.COMPASS) {
-				    	p.openInventory(KitsInventory.jeux);
+	        	if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
+					if(p.getInventory().getItemInHand().getType() == Material.COMPASS) {
+				    	p.openInventory(ChestsInventory.jeux);
 				    	p.playSound(loc,Sound.NOTE_PLING, 4L, 2L);
 					}
 				}
@@ -57,9 +57,9 @@ public class Events implements Listener{
 			if(p.hasPermission("hub.open.chests")){
 				//if(p.getGameMode() != GameMode.CREATIVE){
 					//if(p.isOp() == true){
-		        	if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
-						if(p.getItemInHand().getType() == Material.COMPASS) {
-					    	p.openInventory(KitsInventory.jeux);
+		        	if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
+						if(p.getInventory().getItemInHand().getType() == Material.COMPASS) {
+					    	p.openInventory(ChestsInventory.jeux);
 					    	p.playSound(loc,Sound.NOTE_PLING, 4L, 2L);
 						}
 					}
@@ -75,24 +75,26 @@ public class Events implements Listener{
 	        if(p.hasPermission("hub.open.chests")){
 			//if(p.getGameMode() != GameMode.CREATIVE){
 			//if(p.isOp() == true){
+	        if(p.getItemInHand() != null){
 		    	if(e.getAction().equals(Action.RIGHT_CLICK_AIR)){
-		    		if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
-		    			if(p.getItemInHand().getType() == Material.FIREWORK) {
+		    		if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
+		    			if(p.getInventory().getItemInHand().getType() == Material.FIREWORK) {
 		    				e.setCancelled(true);
-		    				p.openInventory(KitsInventory.cosmetiques);
+		    				p.openInventory(ChestsInventory.cosmetiques);
 		    				p.playSound(loc,Sound.NOTE_PLING, 4L, 2L);
 		    			}
 		    		}
 		    	}else if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
-		    		if(p.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
-		    			if(p.getItemInHand().getType() == Material.FIREWORK) {
-		    				p.openInventory(KitsInventory.cosmetiques);
+		    		if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
+		    			if(p.getInventory().getItemInHand().getType() == Material.FIREWORK) {
+		    				p.openInventory(ChestsInventory.cosmetiques);
 		    				p.playSound(loc,Sound.NOTE_PLING, 4L, 2L);
 		    				e.setCancelled(true);
-		    			}	
-		    		}
+		    			}
+		    		}	
 		    	}
 		    }
+	    }
 	}
 	/*Interaction joueursOn/Off*/
 	@EventHandler
@@ -100,45 +102,43 @@ public class Events implements Listener{
 		Player p = e.getPlayer();
 		Location loc = p.getLocation();
 		if(p.hasPermission("hub.open.chests")){
-			if(e.getAction().equals(Action.RIGHT_CLICK_AIR)){
-				if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Masque les joueurs")){
-					e.setCancelled(true);
-					p.sendMessage(ChatUtils.prefixHub()+"Tous les joueurs viennent de disparaître !");
-					p.getInventory().setItemInHand(Items.joueursOn());
-					p.playSound(loc,Sound.ORB_PICKUP, 4L, 2L);
-					for(Player pls : Bukkit.getOnlinePlayers()){
-						p.hidePlayer(pls);
+			if(p.getInventory().getItemInHand() != null){
+				if(e.getAction().equals(Action.RIGHT_CLICK_AIR)){
+					if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Masque les joueurs")){
+						e.setCancelled(true);
+						p.sendMessage(ChatUtils.prefixHub()+"Tous les joueurs viennent de disparaître !");
+						p.getInventory().setItemInHand(Items.joueursOn());
+						p.playSound(loc,Sound.ORB_PICKUP, 4L, 2L);
+						for(Player pls : Bukkit.getOnlinePlayers()){
+							p.hidePlayer(pls);
+						}
+					}else if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED + "Affiche les joueurs")){
+						e.setCancelled(true);
+						p.sendMessage(ChatUtils.prefixHub() + "Les joueurs sont réapparus !");
+						p.getInventory().setItemInHand(Items.joueursOff());
+						p.playSound(loc,Sound.ORB_PICKUP, 4L, 2L);
+						for(Player pls : Bukkit.getOnlinePlayers()){
+							p.showPlayer(pls);
+						}
 					}
-				}else if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED + "Affiche les joueurs")){
-					e.setCancelled(true);
-					p.sendMessage(ChatUtils.prefixHub() + "Les joueurs sont réapparus !");
-					p.getInventory().setItemInHand(Items.joueursOff());
-					p.playSound(loc,Sound.ORB_PICKUP, 4L, 2L);
-					for(Player pls : Bukkit.getOnlinePlayers()){
-						p.showPlayer(pls);
+				}else if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+					if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Masque les joueurs")){
+						e.setCancelled(true);
+						p.sendMessage(ChatUtils.prefixHub()+"Tous les joueurs viennent de disparaître !");
+						p.getInventory().setItemInHand(Items.joueursOn());
+						p.playSound(loc,Sound.ORB_PICKUP, 4L, 2L);
+						for(Player pls : Bukkit.getOnlinePlayers()){
+							p.hidePlayer(pls);
+						}
+					}else if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED + "Affiche les joueurs")){
+						e.setCancelled(true);
+						p.sendMessage(ChatUtils.prefixHub() + "Les joueurs sont réapparus !");
+						p.getInventory().setItemInHand(Items.joueursOff());
+						p.playSound(loc,Sound.ORB_PICKUP, 4L, 2L);
+						for(Player pls : Bukkit.getOnlinePlayers()){
+							p.showPlayer(pls);
+						}
 					}
-				}
-			}else if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
-				if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Masque les joueurs")){
-					e.setCancelled(true);
-					p.sendMessage(ChatUtils.prefixHub()+"Tous les joueurs viennent de disparaître !");
-					p.getInventory().setItemInHand(Items.joueursOn());
-					p.playSound(loc,Sound.ORB_PICKUP, 4L, 2L);
-					for(Player pls : Bukkit.getOnlinePlayers()){
-						p.hidePlayer(pls);
-					}
-				}else if(p.getInventory().getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED + "Affiche les joueurs")){
-					e.setCancelled(true);
-					p.sendMessage(ChatUtils.prefixHub() + "Les joueurs sont réapparus !");
-					p.getInventory().setItemInHand(Items.joueursOff());
-					p.playSound(loc,Sound.ORB_PICKUP, 4L, 2L);
-					for(Player pls : Bukkit.getOnlinePlayers()){
-						p.showPlayer(pls);
-					}
-				}
-			}else if(e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
-				if(!(p.getInventory().getItemInHand() == null)){
-					e.setCancelled(false);
 				}
 			}
 		}
@@ -146,10 +146,9 @@ public class Events implements Listener{
 	/*Event cancelled while trying to move anything in the inventory*/
 	@EventHandler
 	public void onInventoryClickEvent(InventoryClickEvent e) {
-		Player player = (Player) e.getWhoClicked(); 
 		ItemStack clicked = e.getCurrentItem(); 
-		Inventory inventory = e.getInventory(); 
 		//if (inventory.getType().equals(InventoryType.PLAYER)) {
+		if(clicked != null){
 			if (clicked.getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){ 
 				e.setCancelled(true);
 			}else if(clicked.getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
@@ -159,7 +158,7 @@ public class Events implements Listener{
 			}else if(clicked.getItemMeta().getDisplayName().equals(ChatColor.DARK_RED + "Affiche les joueurs")){
 				e.setCancelled(true);
 			}
-	
+		}
 		
 	}
 	
@@ -167,14 +166,16 @@ public class Events implements Listener{
 	@EventHandler
 	public void ItemDropEvent(PlayerDropItemEvent e){
 		Item item = e.getItemDrop();
-		if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
-			e.setCancelled(true);
-		}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
-			e.setCancelled(true);
-		}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED + "Affiche les joueurs")){
-			e.setCancelled(true);
-		}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Masque les joueurs")){
-			e.setCancelled(true);
+		if(item!= null){
+			if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED+"Jeux")){
+				e.setCancelled(true);
+			}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_PURPLE+"Cosmétiques")){
+				e.setCancelled(true);
+			}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.DARK_RED + "Affiche les joueurs")){
+				e.setCancelled(true);
+			}else if(item.getItemStack().getItemMeta().getDisplayName().equals(ChatColor.GREEN + "Masque les joueurs")){
+				e.setCancelled(true);
+			}
 		}
 	}
 }

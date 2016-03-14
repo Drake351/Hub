@@ -1,16 +1,13 @@
 name: Hub
 main: com.drake.hub.HubMain
-version: 1.0
+version: Snapshot-13.03.16
 commands:
    setlobby:
       description: SetLobby
       usage: 
-   sethub:
-      description: SetHub
-      usage: 
    lobby:
       description: Lobby
       usage: 
-   hub:
-      description: Hub
-      usage:
+   setmotd:
+      description: Motd
+      usage: 

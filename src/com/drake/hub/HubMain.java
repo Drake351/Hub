@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HubMain extends JavaPlugin implements Listener {
@@ -32,12 +33,9 @@ public class HubMain extends JavaPlugin implements Listener {
 				if(p.hasPermission("hub.set.lobby")){
 					Location hub = p.getLocation();
 					String path = "lobby";
-					World world = p.getWorld();
-					String path2 = "lobby-world";
 					this.getConfig().set(path, hub);
-					this.getConfig().set(path2, world);
 					this.saveConfig();
-					p.sendMessage(ChatUtils.prefixHub()+ "Lobby défini !");
+					p.sendMessage(ChatUtils.prefixAdmin()+ "Lobby défini !");
 				}
 			}else{
 				System.out.println("Tu dois être joueur pour faire cette commande");
@@ -50,15 +48,34 @@ public class HubMain extends JavaPlugin implements Listener {
 			}else{
 				System.out.println("Tu dois être joueur pour faire cette commande");
 			}
+		}else if(cmd.getName().equalsIgnoreCase("setmotd")){
+			if(sender instanceof Player){
+				if(args.length >= 1){
+					if(!p.hasPermission("hub.set.motd")){p.sendMessage("Tu n'as pas la permission");}
+					if(p.hasPermission("hub.set.motd")){
+						StringBuilder str = new StringBuilder();
+                        for (int i = 0; i < args.length; i++) {
+                                str.append(args[i] + " ");
+                        }
+                        String motd = str.toString();
+                        getConfig().set("motd", motd);
+                        saveConfig();
+						p.sendMessage(ChatUtils.prefixAdmin() + "Motd défini en " + motd);
+					}
+					
+				}
+			}
 		}
 		return false;
 	}
-	/*Clear des drops dans le monde du lobby*/
+	
 	@EventHandler
-	public void PlayerDeath(PlayerDeathEvent e){
-		Player p = e.getEntity();
-		if(p.getLocation().getWorld().equals(this.getConfig().get("lobby-world"))){
-			e.getDrops().clear();
-		}
+	public void playerJoinMotd(PlayerJoinEvent e) {
+		Player p = e.getPlayer();
+		String string = (String) getConfig().get("motd");
+		String string2 = string.replaceAll("&" , "§");
+		String string3 = string2.replaceAll("§§" , "&");
+		String message = string3.replaceAll("%p", p.getCustomName());
+		p.sendMessage(message);
 	}
 }
